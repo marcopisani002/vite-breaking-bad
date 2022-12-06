@@ -1,0 +1,14 @@
+@use "./partials/variables" as *;
+@use "./partials/transitions";
+@use "bootstrap/scss/bootstrap";
+
+// Impotrazione di FontAwsome
+// @use "@fortawesome/fontawesome-free/css/all.min.css";
+
+body {
+  font-family: fantasy;
+  color: $text-color;
+ background-image: url("https://cdn.wallpapersafari.com/84/98/mYGpq0.jpg");
+ background-size: 100%;
+
+}
