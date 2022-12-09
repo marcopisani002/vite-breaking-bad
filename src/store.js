@@ -1,40 +1,61 @@
-import {reactive} from "vue";
+import { reactive } from "vue";
 import axios from "axios";
 
-
 export const store = reactive({
-    peoplesList: [],
-loading:false
-
-
-
+  charactersList: [],
+  /**
+   * @property {number}        count
+   * @property {number}        pages
+   * @property {string | null} next
+   * @property {string | null} prev
+   */
+  paginationInfo: {},
+  currentPage: 1,
+  loading: false,
+  selectedChar: null,
+  activeFilters: null,
+  searchText: ""
 });
-export function fetchPeoples(){
-    store.loading = true;
 
-    axios.get("https://swapi.dev/api/people/")
-.then((resp)=>{
-    store.peoplesList = resp.data.results;
+export function fetchCharacters () {
+
+  store.loading = true;
+
+  axios.get("https://rickandmortyapi.com/api/character", {
+
+    params: {
+      page: store.currentPage,
+  
+      ...store.activeFilters
+    }
+  })
+   
+    .then((resp) => {
 
 
+      console.log("then invocato");
 
-    console.log(store);
-    setTimeout(() => {
-        // Impostiamo a false il loading per nascondere la schermata di caricamento
+
+      store.charactersList = resp.data.results;
+      store.paginationInfo = resp.data.info;
+
+      console.log(store);
+
+    
+      setTimeout(() => {
+      
         store.loading = false;
-      }, 2000);
+      }, 500);
+    })
 
-})
+    .catch((error) => {
+    
+      console.log(error);
 
-.catch((error) => {
-   
-    console.log(error);
-
-   
-    console.log("Codice errore: ", error.response.status);
+ 
+      console.log("Codice errore: ", error.response.status);
 
 
-    store.loading = false;
-  });
-
+      store.loading = false;
+    });
 }

@@ -1,34 +1,50 @@
 <template>
   <div>
-    
-    <div class="container pb-5">
-    
+    <TheHeader message="Rick & Morty"></TheHeader>
 
-      <!-- Something awesome -->
-      <PeopleList></PeopleList>
+    <div class="container pb-5">
+      <FiltersBanner @search="onSearch"></FiltersBanner>
+
+      <CharactersList></CharactersList>
     </div>
 
     <Transition name="slide-fade">
       <TheLoader v-if="store.loading"></TheLoader>
     </Transition>
 
+   
   </div>
 </template>
 
 <script>
-import PeopleList from './components/PeopleList.vue';
+import CharactersList from './components/CharactersList.vue';
+import FiltersBanner from './components/FiltersBanner.vue';
 
+import TheHeader from './components/TheHeader.vue';
 import TheLoader from './components/TheLoader.vue';
-import { store } from "./store";
+import { fetchCharacters, store } from "./store";
 
 export default {
-  components: {  PeopleList, TheLoader },
+  components: { TheHeader,  CharactersList, FiltersBanner, TheLoader },
   data () {
     return {
-      welcome: "Welcome Boolean",
+ 
       store
     };
   },
+  computed: {
+  },
+  methods: {
+    onSearch (filtersEmitted) {
+      this.store.activeFilters = filtersEmitted;
+
+      fetchCharacters();
+
+      console.log(filtersEmitted);
+    }
+  },
+ 
+
 };
 </script>
 
